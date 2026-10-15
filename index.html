@@ -3,11 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Eval size calculator: how many questions, with a grader that makes mistakes</title>
+<title>Eval Sample Size Calculator</title>
 <meta name="description" content="Estimate how many questions an eval needs to detect a real improvement, accounting for golden-set, human and LLM-judge grading mistakes.">
+<link rel="canonical" href="https://piyushr1.github.io/eval-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How many questions does your eval need?">
+<meta property="og:description" content="A sample-size calculator for evals that accounts for grader mistakes.">
+<meta property="og:url" content="https://piyushr1.github.io/eval-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F4E5F'/%3E%3Ccircle cx='9' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='9' cy='16' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='16' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='16' r='2.7' fill='%23E3AA55'/%3E%3Ccircle cx='9' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -15,11 +23,12 @@
     --surface: #FFFFFF;
     --text: #1A2328;
     --muted: #5B6770;
+    --faint: #7A868C;
     --rule: #D9DEE0;
+    --track: #E6EAEB;
     --ink: #1F4E5F;
     --ink-soft: rgba(31, 78, 95, 0.12);
     --signal: #B9771A;
-    --signal-soft: rgba(185, 119, 26, 0.16);
     --error: #A33A2C;
     --serif: 'Spectral', Georgia, 'Times New Roman', serif;
     --sans: 'Public Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -31,11 +40,12 @@
       --surface: #192125;
       --text: #E6ECEE;
       --muted: #9AA8AF;
+      --faint: #82919A;
       --rule: #2C373C;
+      --track: #263035;
       --ink: #86B9CA;
       --ink-soft: rgba(134, 185, 202, 0.16);
       --signal: #E3AA55;
-      --signal-soft: rgba(227, 170, 85, 0.18);
       --error: #E58472;
     }
   }
@@ -49,242 +59,295 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  .page { max-width: 1040px; margin: 0 auto; padding: 48px 24px 64px; }
-  header { max-width: 680px; margin-bottom: 40px; }
+  .page { max-width: 860px; margin: 0 auto; padding: 44px 20px 64px; }
+
+  /* Heading */
+  header { text-align: center; max-width: 640px; margin: 0 auto 32px; }
+  .kicker { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; font-weight: 500; }
   h1 {
     font-family: var(--serif);
-    font-weight: 600;
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    font-weight: 500;
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.2;
     margin: 0 0 12px;
   }
-  .lede { color: var(--muted); margin: 0; font-size: 17px; }
-  .grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    gap: 40px;
-    align-items: start;
-  }
-  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; gap: 32px; } }
+  h1 em { color: var(--muted); }
+  .lede { color: var(--muted); margin: 0; font-size: 16.5px; }
 
-  /* Inputs */
-  form { display: grid; gap: 28px; }
-  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 16px; }
-  legend {
-    font-family: var(--serif);
-    font-weight: 600;
-    font-size: 20px;
-    margin-bottom: 4px;
-    padding: 0;
-  }
-  .field { display: grid; gap: 6px; }
-  .field label, .field .label { font-weight: 500; font-size: 15px; }
-  .hint { color: var(--muted); font-size: 13.5px; margin: 0; }
-  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .num {
-    display: flex; align-items: center;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--surface);
-    padding: 0 12px;
-    max-width: 160px;
-  }
-  .num input {
-    width: 100%;
-    border: 0; background: transparent; color: var(--text);
-    font: 500 17px var(--sans);
-    font-variant-numeric: tabular-nums;
-    padding: 9px 0;
-    outline: none;
-  }
-  .num span { color: var(--muted); font-size: 15px; }
-  .num:focus-within { border-color: var(--ink); box-shadow: 0 0 0 3px var(--ink-soft); }
-  .slider { display: grid; grid-template-columns: 1fr minmax(48px, auto); gap: 14px; align-items: center; }
-  .slider output { font: 500 16px var(--sans); font-variant-numeric: tabular-nums; text-align: right; }
-  input[type=range] { width: 100%; accent-color: var(--ink); }
-  input[type=range]:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
-  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--surface); }
-  .seg label { position: relative; }
-  .seg input { position: absolute; opacity: 0; inset: 0; }
-  .seg span { display: block; padding: 8px 14px; font-size: 14.5px; cursor: pointer; color: var(--muted); }
-  .seg input:checked + span { background: var(--ink); color: var(--bg); }
-  .seg input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: -4px; }
-  .seg label + label span { border-left: 1px solid var(--rule); }
-  select {
-    font: 500 15px var(--sans); color: var(--text); background: var(--surface);
-    border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px;
-  }
-  select:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-  .paired-only[hidden] { display: none; }
-
-  /* Result */
-  .result {
-    position: sticky; top: 24px;
+  /* Input panel */
+  .panel {
+    position: relative;
     background: var(--surface);
     border: 1px solid var(--rule);
     border-radius: 10px;
-    padding: 28px;
+    padding: 26px 28px 24px;
   }
-  @media (max-width: 820px) { .result { position: static; } }
-  .answer-label { color: var(--muted); font-size: 15px; margin: 0 0 4px; }
+  .panel-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px 40px; }
+  .group + .group { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--rule); }
+  .group-title { font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 12px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+  .row + .row { margin-top: 10px; }
+  .row > label { font-family: var(--serif); font-size: 17px; line-height: 1.3; }
+  .hint { color: var(--faint); font-size: 14px; font-style: italic; margin: 8px 0 0; font-family: var(--serif); }
+  .box {
+    display: inline-flex; align-items: center;
+    width: 104px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--bg);
+    padding: 0 10px 0 4px;
+  }
+  .box input {
+    width: 100%;
+    border: 0; background: transparent; color: var(--text);
+    font: 500 18px var(--sans);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    padding: 7px 6px;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  .box input::-webkit-outer-spin-button, .box input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .box span { color: var(--muted); font-size: 15px; }
+  .box:focus-within { border-color: var(--ink); box-shadow: 0 0 0 3px var(--ink-soft); }
+  .box.sm { width: 92px; vertical-align: middle; padding-right: 4px; }
+  .box.sm input { font-size: 16px; padding: 3px 6px; }
+
+  .choice { display: grid; gap: 6px; margin: 2px 0 4px; }
+  .choice label { display: flex; gap: 10px; align-items: baseline; font-family: var(--serif); font-size: 17px; cursor: pointer; }
+  .choice input { accent-color: var(--ink); margin: 0; transform: translateY(1px); }
+  .choice small { color: var(--faint); font-size: 14px; font-style: italic; }
+  .paired-only { margin-top: 14px; }
+  .paired-only[hidden] { display: none; }
+  .slider-row { display: grid; grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; align-items: center; margin-top: 12px; }
+  .slider-row label { font-family: var(--serif); font-size: 17px; line-height: 1.3; }
+  .slider-row .ctl { display: grid; gap: 2px; }
+  .slider-row output { font-size: 13.5px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--ink); margin: 0; }
+  input[type=range]:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+  /* Signal visual, beside the inputs */
+  .signal { border-left: 1px solid var(--rule); padding-left: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .sig-row { display: grid; gap: 6px; }
+  .sig-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .sig-head .who { font-family: var(--serif); font-size: 16.5px; }
+  .sig-head .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sig-track { height: 14px; background: var(--track); border-radius: 3px; overflow: hidden; }
+  .sig-fill { height: 100%; background: var(--ink); transition: width .25s ease; }
+  .sig-sub { color: var(--muted); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .sig-note { color: var(--faint); font-size: 14px; font-style: italic; font-family: var(--serif); margin: 0; }
+  .sig-j { margin: 0; font-size: 14.5px; color: var(--muted); padding-top: 14px; border-top: 1px solid var(--rule); }
+  .sig-j strong { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  .link-btn {
+    margin-top: 14px;
+    font: 500 14px var(--sans); color: var(--ink);
+    background: transparent; border: 1px solid var(--rule); padding: 6px 12px; cursor: pointer;
+    border-radius: 6px;
+  }
+  .link-btn:hover { text-decoration: underline; }
+  .link-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+  /* Answer */
+  .result { text-align: center; margin: 40px auto 0; max-width: 560px; }
+  .answer-label { font-family: var(--serif); font-style: italic; font-size: 21px; color: var(--muted); margin: 0; }
   .answer {
     font-family: var(--serif);
-    font-weight: 600;
-    font-size: clamp(52px, 8vw, 76px);
-    line-height: 1;
+    font-weight: 500;
+    font-size: clamp(60px, 11vw, 92px);
+    line-height: 1.02;
     letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums lining-nums;
-    margin: 0;
+    font-variant-numeric: lining-nums tabular-nums;
+    margin: 2px 0 4px;
   }
-  .answer-unit { color: var(--muted); font-size: 16px; margin: 8px 0 24px; }
-  .compare { display: grid; gap: 10px; margin-bottom: 24px; }
-  .bar-row { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: center; font-size: 14px; }
-  .bar-row .who { color: var(--muted); }
-  .track { height: 22px; position: relative; }
-  .bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; display: flex; align-items: center; transition: width .25s ease; }
+  .answer-unit { color: var(--muted); margin: 0; font-size: 16px; }
+  .compare { display: grid; gap: 8px; margin: 26px auto 0; max-width: 460px; text-align: left; }
+  .bar-row { display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: center; font-size: 14px; }
+  .bar-row .who { color: var(--muted); text-align: right; }
+  .track { height: 20px; position: relative; }
+  .bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; transition: width .25s ease; }
   .bar.base { background: var(--ink); }
   .bar.extra { background: var(--signal); }
-  .bar-value { position: absolute; top: 2px; font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; transition: left .25s ease; }
-  .facts { border-top: 1px solid var(--rule); padding-top: 18px; display: grid; gap: 10px; font-size: 15px; }
-  .facts p { margin: 0; }
-  .facts strong { font-variant-numeric: tabular-nums; }
-  .error-msg { color: var(--error); font-size: 15px; margin: 0; }
-  .mde { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); display: grid; gap: 10px; }
-  .mde-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 15px; }
-  .mde p { margin: 0; font-size: 15px; }
+  .bar-value { position: absolute; top: 1px; font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .compare-note { color: var(--muted); font-size: 15px; margin: 16px 0 0; }
+  .compare-note strong { color: var(--text); font-variant-numeric: tabular-nums; }
+  .error-msg { color: var(--error); font-size: 16px; margin: 0; }
+
+  /* Power and significance */
+  .settings { max-width: 740px; margin: 36px auto 0; display: grid; gap: 14px; }
+  .setting { display: grid; grid-template-columns: 190px 170px 44px minmax(0, 1fr); gap: 14px; align-items: center; }
+  .setting label { font-family: var(--serif); font-size: 16px; text-align: right; }
+  .setting output { font-weight: 600; font-variant-numeric: tabular-nums; font-size: 15px; }
+  .setting .note { color: var(--faint); font-size: 14px; font-style: italic; font-family: var(--serif); margin: 0; }
+
+  /* What you can detect now */
+  .mde {
+    max-width: 740px; margin: 32px auto 0;
+    padding: 18px 22px;
+    border: 1px dashed var(--rule);
+    border-radius: 8px;
+    font-size: 15.5px;
+    line-height: 1.75;
+  }
+  .mde p { margin: 0; }
+  .mde strong { font-variant-numeric: tabular-nums; }
 
   /* Chart */
   .chart-wrap { margin-top: 56px; }
-  h2 { font-family: var(--serif); font-weight: 600; font-size: 24px; margin: 0 0 6px; }
-  .chart-wrap .hint { margin-bottom: 16px; }
-  .chart { width: 100%; overflow-x: auto; }
-  .chart svg { display: block; width: 100%; min-width: 520px; height: auto; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 24px; margin: 0 0 4px; }
+  .chart-wrap > p { color: var(--muted); font-size: 15px; margin: 0 0 14px; max-width: 640px; }
+  .chart svg { display: block; width: 100%; height: auto; }
   .chart text { font-family: var(--sans); }
+  .c-grid { stroke: var(--rule); stroke-width: 1; }
+  .c-tick { fill: var(--muted); font-size: 12px; }
+  .c-curve { fill: none; stroke: var(--ink); stroke-width: 2.25; stroke-linejoin: round; }
+  .c-dot { fill: var(--signal); stroke: var(--surface); stroke-width: 2; }
+  .c-label { fill: var(--text); font-size: 13px; font-weight: 600; }
 
-  details { margin-top: 48px; max-width: 720px; border-top: 1px solid var(--rule); padding-top: 16px; }
-  summary { cursor: pointer; font-weight: 600; }
+  details { margin-top: 48px; border-top: 1px solid var(--rule); padding-top: 16px; }
+  summary { cursor: pointer; font-family: var(--serif); font-size: 18px; }
   summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-  details p, details li { color: var(--muted); font-size: 15px; }
-  details ul { padding-left: 20px; }
-  footer { margin-top: 40px; color: var(--muted); font-size: 14px; }
+  details li { color: var(--muted); font-size: 15px; margin-bottom: 6px; }
+  details ul { padding-left: 20px; max-width: 720px; }
+  footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
   footer a { color: var(--ink); }
-  @media (prefers-reduced-motion: reduce) { .bar, .bar-value { transition: none; } }
+
+  @media (max-width: 760px) {
+    .page { padding: 32px 16px 48px; }
+    .panel { padding: 22px 16px 18px; }
+    .panel-grid { grid-template-columns: 1fr; }
+    .signal { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 20px; }
+    .setting { grid-template-columns: minmax(0, 1fr) 44px; gap: 4px 12px; }
+    .setting label { text-align: left; grid-column: 1 / -1; }
+    .setting .note { grid-column: 1 / -1; }
+    .bar-row { grid-template-columns: 96px 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar, .sig-fill { transition: none; } }
+  @media print {
+    .link-btn { display: none; }
+    body { background: #fff; }
+  }
 </style>
 </head>
 <body>
 <div class="page">
   <header>
-    <h1>How many questions does your eval need?</h1>
+    <p class="kicker">Eval sample size calculator</p>
+    <h1><em>Question:</em> How many questions does your eval need?</h1>
     <p class="lede">Standard sample-size math assumes every answer is graded correctly. Enter how often your grader gets it wrong, and see what that costs you.</p>
   </header>
 
-  <div class="grid">
-    <form id="calc" novalidate>
-      <fieldset>
-        <legend>The improvement</legend>
-        <div class="pair">
-          <div class="field">
+  <form class="panel" id="calc" novalidate>
+    <div class="panel-grid">
+      <div>
+        <div class="group">
+          <p class="group-title">The improvement</p>
+          <div class="row">
             <label for="p0">Current accuracy</label>
-            <div class="num"><input id="p0" type="number" min="1" max="99" step="0.5" value="82" inputmode="decimal"><span>%</span></div>
+            <div class="box"><input id="p0" type="number" min="1" max="99" step="0.5" value="82" inputmode="decimal"><span>%</span></div>
           </div>
-          <div class="field">
+          <div class="row">
             <label for="p1">Target accuracy</label>
-            <div class="num"><input id="p1" type="number" min="1" max="99.5" step="0.5" value="85" inputmode="decimal"><span>%</span></div>
+            <div class="box"><input id="p1" type="number" min="1" max="99.5" step="0.5" value="85" inputmode="decimal"><span>%</span></div>
           </div>
+          <p class="hint">True accuracy, as a perfect grader would measure it.</p>
         </div>
-        <p class="hint">True accuracy, as a perfect grader would measure it.</p>
-      </fieldset>
 
-      <fieldset>
-        <legend>Your grader</legend>
-        <div class="field">
-          <label for="ffr">Fails correct answers</label>
-          <div class="slider"><input id="ffr" type="range" min="0" max="30" step="1" value="10"><output for="ffr" id="ffrOut">10%</output></div>
+        <div class="group">
+          <p class="group-title">Your grader</p>
+          <div class="row">
+            <label for="ffr">Fails correct answers</label>
+            <div class="box"><input id="ffr" type="number" min="0" max="49" step="1" value="10" inputmode="decimal"><span>%</span></div>
+          </div>
+          <div class="row">
+            <label for="fpr">Passes incorrect answers</label>
+            <div class="box"><input id="fpr" type="number" min="0" max="49" step="1" value="10" inputmode="decimal"><span>%</span></div>
+          </div>
+          <p class="hint">Estimate both from a grading audit. A golden set, human raters and an LLM judge each have their own rates.</p>
         </div>
-        <div class="field">
-          <label for="fpr">Passes incorrect answers</label>
-          <div class="slider"><input id="fpr" type="range" min="0" max="30" step="1" value="10"><output for="fpr" id="fprOut">10%</output></div>
-        </div>
-        <p class="hint">Estimate both from a grading audit. A golden set, human raters and an LLM judge each have their own rates.</p>
-      </fieldset>
 
-      <fieldset>
-        <legend>The comparison</legend>
-        <div class="seg" role="radiogroup" aria-label="Comparison design">
-          <label><input type="radio" name="design" value="separate"><span>Separate questions</span></label>
-          <label><input type="radio" name="design" value="paired" checked><span>Same questions</span></label>
-        </div>
-        <div class="field paired-only">
-          <label for="disc">Versions disagree on</label>
-          <div class="num"><input id="disc" type="number" min="0.5" max="100" step="0.5" value="10" inputmode="decimal"><span>%</span></div>
-          <p class="hint">Share of questions where one version is right and the other wrong, with perfect grading.</p>
-        </div>
-        <div class="field paired-only">
-          <label for="rho">Grader mistakes on the same question</label>
-          <div class="slider"><input id="rho" type="range" min="0" max="100" step="5" value="0"><output for="rho" id="rhoOut">Independent</output></div>
-          <p class="hint">A wrong answer key fails both versions together. Independent mistakes are the worst case.</p>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Confidence</legend>
-        <div class="pair">
-          <div class="field">
-            <label for="alpha">Significance</label>
-            <select id="alpha">
-              <option value="0.10">10%</option>
-              <option value="0.05" selected>5%</option>
-              <option value="0.01">1%</option>
-            </select>
+        <div class="group">
+          <p class="group-title">The comparison</p>
+          <div class="choice" role="radiogroup" aria-label="Comparison design">
+            <label><input type="radio" name="design" value="paired" checked><span>Same questions <small>both versions answer every question</small></span></label>
+            <label><input type="radio" name="design" value="separate"><span>Separate questions <small>each version gets its own set</small></span></label>
           </div>
-          <div class="field">
-            <label for="power">Power</label>
-            <select id="power">
-              <option value="0.8" selected>80%</option>
-              <option value="0.9">90%</option>
-            </select>
+          <div class="paired-only">
+            <div class="row">
+              <label for="disc">Versions disagree on</label>
+              <div class="box"><input id="disc" type="number" min="0.5" max="100" step="0.5" value="10" inputmode="decimal"><span>%</span></div>
+            </div>
+            <p class="hint">Share of questions where one version is right and the other wrong, with perfect grading.</p>
+            <div class="slider-row">
+              <label for="rho">Grader mistakes on the same question</label>
+              <div class="ctl"><input id="rho" type="range" min="0" max="100" step="5" value="0"><output for="rho" id="rhoOut">Independent</output></div>
+            </div>
+            <p class="hint">A wrong answer key fails both versions together. Independent mistakes are the worst case.</p>
           </div>
-        </div>
-      </fieldset>
-    </form>
-
-    <section class="result" aria-live="polite">
-      <div id="ok">
-        <p class="answer-label" id="answerLabel">With your grader, you need</p>
-        <p class="answer" id="answer">—</p>
-        <p class="answer-unit" id="answerUnit">shared questions</p>
-        <div class="compare">
-          <div class="bar-row">
-            <span class="who">Perfect grader</span>
-            <div class="track"><div class="bar base" id="barPerfect"></div><span class="bar-value" id="valPerfect"></span></div>
-          </div>
-          <div class="bar-row">
-            <span class="who">Your grader</span>
-            <div class="track"><div class="bar extra" id="barYours"></div><div class="bar base" id="barYoursBase"></div><span class="bar-value" id="valYours"></span></div>
-          </div>
-        </div>
-        <div class="facts">
-          <p id="factGap"></p>
-          <p id="factJ"></p>
-          <p id="factDisc"></p>
         </div>
       </div>
-      <p class="error-msg" id="err" hidden></p>
 
-      <div class="mde">
-        <div class="mde-row">
-          <label for="have">Questions you have now</label>
-          <div class="num" style="max-width:130px"><input id="have" type="number" min="10" step="10" value="150" inputmode="numeric"></div>
+      <div class="signal">
+        <p class="group-title" style="margin:0">What the grader lets you see</p>
+        <div class="sig-row">
+          <div class="sig-head"><span class="who">Real improvement</span><span class="val" id="sigRealVal"></span></div>
+          <div class="sig-track"><div class="sig-fill" id="sigReal" style="width:100%"></div></div>
+          <span class="sig-sub" id="sigRealSub"></span>
         </div>
-        <p id="mdeText"></p>
+        <div class="sig-row">
+          <div class="sig-head"><span class="who">What your grader reports</span><span class="val" id="sigSeenVal"></span></div>
+          <div class="sig-track"><div class="sig-fill" id="sigSeen"></div></div>
+          <span class="sig-sub" id="sigSeenSub"></span>
+        </div>
+        <p class="sig-note">The grey part is signal your grader's mistakes erase. You make up for it with more questions.</p>
+        <p class="sig-j" id="sigJ"></p>
       </div>
-    </section>
+    </div>
+  </form>
+
+  <section class="result" aria-live="polite">
+    <div id="ok">
+      <p class="answer-label">Questions needed</p>
+      <p class="answer" id="answer">—</p>
+      <p class="answer-unit" id="answerUnit">shared questions</p>
+      <div class="compare">
+        <div class="bar-row">
+          <span class="who">Perfect grader</span>
+          <div class="track"><div class="bar base" id="barPerfect"></div><span class="bar-value" id="valPerfect"></span></div>
+        </div>
+        <div class="bar-row">
+          <span class="who">Your grader</span>
+          <div class="track"><div class="bar extra" id="barYours"></div><div class="bar base" id="barYoursBase"></div><span class="bar-value" id="valYours"></span></div>
+        </div>
+      </div>
+      <p class="compare-note" id="compareNote"></p>
+      <button type="button" class="link-btn" id="copyLink">Copy link to these settings</button>
+    </div>
+    <p class="error-msg" id="err" hidden></p>
+  </section>
+
+  <div class="settings">
+    <div class="setting">
+      <label for="power">Statistical power 1−β</label>
+      <input id="power" type="range" min="50" max="95" step="5" value="80">
+      <output for="power" id="powerOut">80%</output>
+      <p class="note">How often a real improvement of this size is detected.</p>
+    </div>
+    <div class="setting">
+      <label for="alpha">Significance level α</label>
+      <input id="alpha" type="range" min="1" max="10" step="1" value="5">
+      <output for="alpha" id="alphaOut">5%</output>
+      <p class="note">How often a difference is reported when there is none.</p>
+    </div>
+  </div>
+
+  <div class="mde">
+    <p>With <span class="box sm"><input id="have" type="number" min="10" step="10" value="150" inputmode="numeric" aria-label="Questions you have now"></span> <span id="haveUnit">shared questions</span>, <span id="mdeText"></span></p>
   </div>
 
   <section class="chart-wrap">
     <h2>What grader error costs</h2>
-    <p class="hint">Questions needed for your improvement and design, as the grader's error rate rises (same rate in both directions). The dot marks your current settings.</p>
+    <p>Questions needed for your improvement and design as the grader's error rate rises (same rate in both directions). The dot marks your current settings.</p>
     <div class="chart" id="chart"></div>
   </section>
 
@@ -300,7 +363,8 @@
   </details>
 
   <footer>
-    Companion to <em>Why your eval result is probably wrong: too few questions and a grader that makes mistakes</em> by Piyush Ranjan.
+    <span>Companion to <em>Why your eval result is probably wrong: too few questions and a grader that makes mistakes</em> by Piyush Ranjan.</span>
+    <a href="https://github.com/Piyushr1/eval-calculator">Source on GitHub</a>
   </footer>
 </div>
 
@@ -323,6 +387,7 @@
   const $ = id => document.getElementById(id);
   const fmt = n => Math.round(n).toLocaleString('en-US');
   const pct = (x, dp = 1) => (x * 100).toFixed(dp).replace(/\.0$/, '') + '%';
+  const pts = (x, dp = 1) => (x * 100).toFixed(dp).replace(/\.0$/, '');
 
   // Unpaired: questions per version
   function nSeparate(p0, p1, s, f, za, zb) {
@@ -348,6 +413,29 @@
     return { n: Math.ceil(n), pd, gap, q0, q1 };
   }
 
+  // Settings are mirrored in the URL so a copied link reproduces them.
+  const FIELDS = ['p0', 'p1', 'ffr', 'fpr', 'disc', 'rho', 'power', 'alpha', 'have'];
+  const DEFAULTS = {};
+  FIELDS.forEach(k => { DEFAULTS[k] = $(k).value; });
+
+  function loadFromUrl() {
+    const q = new URLSearchParams(location.search);
+    FIELDS.forEach(k => {
+      const v = q.get(k);
+      if (v !== null && v.trim() !== '' && Number.isFinite(Number(v))) $(k).value = v;
+    });
+    const design = q.get('design');
+    if (design === 'paired' || design === 'separate') document.querySelector('input[name=design][value=' + design + ']').checked = true;
+  }
+
+  function syncUrl(v) {
+    const q = new URLSearchParams();
+    FIELDS.forEach(k => { if ($(k).value !== DEFAULTS[k]) q.set(k, $(k).value); });
+    if (!v.paired) q.set('design', 'separate');
+    const s = q.toString();
+    try { history.replaceState(null, '', location.pathname + (s ? '?' + s : '')); } catch (e) { /* not allowed for file:// pages */ }
+  }
+
   function read() {
     return {
       p0: parseFloat($('p0').value) / 100,
@@ -357,8 +445,8 @@
       paired: document.querySelector('input[name=design]:checked').value === 'paired',
       disc: parseFloat($('disc').value) / 100,
       rho: parseFloat($('rho').value) / 100,
-      alpha: parseFloat($('alpha').value),
-      power: parseFloat($('power').value),
+      alpha: parseFloat($('alpha').value) / 100,
+      power: parseFloat($('power').value) / 100,
       have: parseFloat($('have').value)
     };
   }
@@ -376,6 +464,20 @@
       : nSeparate(v.p0, target, s, f, za, zb);
   }
 
+  function validate(v) {
+    if ([v.p0, v.p1, v.ffr, v.fpr].some(Number.isNaN) || (v.paired && Number.isNaN(v.disc))) return 'Enter a number in every field.';
+    if (v.p0 <= 0 || v.p0 >= 1 || v.p1 <= 0 || v.p1 >= 1) return 'Accuracy must be between 0% and 100%.';
+    if (v.p1 <= v.p0) return 'Set the target accuracy above the current accuracy.';
+    if (v.ffr < 0 || v.fpr < 0 || v.ffr >= 1 || v.fpr >= 1) return 'Grader error rates must be between 0% and 100%.';
+    if (1 - v.ffr - v.fpr <= 0) return 'At these error rates the grader is no better than a coin flip, so no number of questions will detect the improvement. Lower one of the error rates.';
+    if (v.paired) {
+      const D = v.p1 - v.p0;
+      if (v.disc < D) return 'The versions must disagree on at least ' + pct(D) + ' of questions to produce a ' + pts(D) + '-point improvement. Raise the disagreement rate.';
+      if ((v.disc + D) / 2 > 1 - v.p0 || (v.disc - D) / 2 > v.p0) return 'That disagreement rate is too high for these accuracies. Lower it.';
+    }
+    return null;
+  }
+
   function showError(msg) {
     $('ok').hidden = true;
     $('err').hidden = false;
@@ -383,33 +485,39 @@
     $('chart').innerHTML = '';
   }
 
-  function validate(v) {
-    if ([v.p0, v.p1, v.disc].some(Number.isNaN)) return 'Enter a number in every field.';
-    if (v.p0 <= 0 || v.p0 >= 1 || v.p1 <= 0 || v.p1 >= 1) return 'Accuracy must be between 0% and 100%.';
-    if (v.p1 <= v.p0) return 'Set the target accuracy above the current accuracy.';
-    if (1 - v.ffr - v.fpr <= 0) return 'At these error rates the grader is no better than a coin flip, so no number of questions will detect the improvement. Lower one of the error rates.';
-    if (v.paired) {
-      const D = v.p1 - v.p0;
-      if (v.disc < D) return 'The versions must disagree on at least ' + pct(D) + ' of questions to produce a ' + (D * 100).toFixed(1).replace(/\.0$/, '') + '-point improvement. Raise the disagreement rate.';
-      if ((v.disc + D) / 2 > 1 - v.p0 || (v.disc - D) / 2 > v.p0) return 'That disagreement rate is too high for these accuracies. Lower it.';
+  function renderSignal(v, ok) {
+    if (!ok) {
+      ['sigRealVal', 'sigSeenVal', 'sigRealSub', 'sigSeenSub', 'sigJ'].forEach(id => { $(id).textContent = ''; });
+      $('sigSeen').style.width = '0';
+      return;
     }
-    return null;
+    const J = 1 - v.ffr - v.fpr;
+    const s = 1 - v.ffr, f = v.fpr;
+    const q0 = f + (s - f) * v.p0, q1 = f + (s - f) * v.p1;
+    $('sigRealVal').textContent = '+' + pts(v.p1 - v.p0) + ' pts';
+    $('sigRealSub').textContent = pct(v.p0) + ' → ' + pct(v.p1);
+    $('sigSeenVal').textContent = '+' + pts(q1 - q0) + ' pts';
+    $('sigSeenSub').textContent = pct(q0) + ' → ' + pct(q1);
+    $('sigSeen').style.width = Math.max(J, 0) * 100 + '%';
+    $('sigJ').innerHTML = 'Grader quality J = <strong>' + J.toFixed(2) + '</strong>. Every gap you measure is J times the real one.';
   }
 
   function render() {
     const v = read();
-    $('ffrOut').textContent = pct(v.ffr, 0);
-    $('fprOut').textContent = pct(v.fpr, 0);
     $('rhoOut').textContent = v.rho === 0 ? 'Independent' : v.rho === 1 ? 'Always shared' : pct(v.rho, 0) + ' shared';
+    $('powerOut').textContent = pct(v.power, 0);
+    $('alphaOut').textContent = pct(v.alpha, 0);
     document.querySelectorAll('.paired-only').forEach(el => { el.hidden = !v.paired; });
+    $('haveUnit').textContent = v.paired ? 'shared questions' : 'questions per version';
+    syncUrl(v);
 
     const problem = validate(v);
-    if (problem) { showError(problem); renderMde(v, true); return; }
-    $('ok').hidden = false; $('err').hidden = true;
+    if (problem) { showError(problem); renderSignal(v, false); renderMde(v, true); return; }
 
     const yours = compute(v, v.ffr, v.fpr);
     const perfect = compute(v, 0, 0);
-    if (yours.invalid || perfect.invalid) { showError('These settings are inconsistent. Check the disagreement rate.'); return; }
+    if (yours.invalid || perfect.invalid) { showError('These settings are inconsistent. Check the disagreement rate.'); renderSignal(v, false); renderMde(v, true); return; }
+    $('ok').hidden = false; $('err').hidden = true;
 
     $('answer').textContent = fmt(yours.n);
     $('answerUnit').textContent = v.paired ? 'shared questions, each answered by both versions' : 'questions per version';
@@ -420,18 +528,20 @@
     $('barYours').style.width = wY + '%';
     $('barYoursBase').style.width = Math.min(wP, wY) + '%';
     placeValue('valPerfect', wP, fmt(perfect.n));
-    placeValue('valYours', wY, fmt(yours.n) + '  (×' + (yours.n / perfect.n).toFixed(2) + ')');
+    placeValue('valYours', wY, fmt(yours.n));
 
-    const trueGap = (v.p1 - v.p0) * 100;
-    const J = 1 - v.ffr - v.fpr;
-    $('factGap').innerHTML = 'Your grader will report <strong>' + pct(yours.q0) + '</strong> vs. <strong>' + pct(yours.q1) + '</strong>: a <strong>' + ((yours.q1 - yours.q0) * 100).toFixed(1) + '-point</strong> gap instead of ' + trueGap.toFixed(1).replace(/\.0$/, '') + '.';
-    $('factJ').innerHTML = 'Grader quality J = <strong>' + J.toFixed(2) + '</strong>. The gap you see is J times the real one.';
+    const ratio = yours.n / perfect.n;
+    let note = ratio > 1.005
+      ? 'Grader mistakes multiply the requirement by <strong>' + ratio.toFixed(2) + '×</strong>.'
+      : 'Your grader adds no extra cost.';
     if (v.paired) {
-      $('factDisc').hidden = false;
-      $('factDisc').innerHTML = 'Observed disagreement rises from <strong>' + pct(v.disc) + '</strong> to <strong>' + pct(yours.pd) + '</strong>' + (yours.pd - v.disc > 0.0005 ? ', because the grader creates disagreements that aren\'t real.' : '.');
-    } else {
-      $('factDisc').hidden = true;
+      note += yours.pd - v.disc > 0.0005
+        ? ' Observed disagreement rises from <strong>' + pct(v.disc) + '</strong> to <strong>' + pct(yours.pd) + '</strong>, because the grader creates disagreements that aren\'t real.'
+        : ' Observed disagreement stays at <strong>' + pct(v.disc) + '</strong>.';
     }
+    $('compareNote').innerHTML = note;
+
+    renderSignal(v, true);
     renderMde(v, false);
     renderChart(v, yours.n);
   }
@@ -439,62 +549,66 @@
   function placeValue(id, widthPct, text) {
     const el = $(id);
     el.textContent = text;
-    if (widthPct > 55) { el.style.left = 'auto'; el.style.right = (100 - widthPct) + '%'; el.style.marginRight = '8px'; el.style.color = 'var(--surface)'; }
+    if (widthPct > 55) { el.style.left = 'auto'; el.style.right = (100 - widthPct) + '%'; el.style.marginRight = '8px'; el.style.marginLeft = '0'; el.style.color = 'var(--surface)'; }
     else { el.style.right = 'auto'; el.style.left = widthPct + '%'; el.style.marginRight = '0'; el.style.marginLeft = '8px'; el.style.color = 'var(--text)'; }
   }
 
   // Smallest true improvement detectable with the questions you have
   function renderMde(v, blocked) {
     const out = $('mdeText');
-    if (blocked || Number.isNaN(v.have) || v.have < 2) { out.textContent = 'Enter valid settings above to see what your current eval can detect.'; return; }
+    if (blocked || Number.isNaN(v.have) || v.have < 2) { out.textContent = 'enter valid settings above to see what your current eval can detect.'; return; }
     let hi = 1 - v.p0 - 1e-4;
     if (v.paired) hi = Math.min(hi, 1 - v.p0 - Math.max((v.disc - (v.p1 - v.p0)) / 2, 0) - 1e-4);
     const nAt = d => { const r = compute(v, v.ffr, v.fpr, v.p0 + d); return r.invalid ? Infinity : r.n; };
-    const unit = v.paired ? 'shared questions' : 'questions per version';
     if (hi <= 0.0005 || nAt(hi) > v.have) {
-      out.innerHTML = 'With <strong>' + fmt(v.have) + '</strong> ' + unit + ', no improvement from ' + pct(v.p0) + ' is reliably detectable under these settings. Treat this eval as a regression check.';
+      out.textContent = 'no improvement from ' + pct(v.p0) + ' is reliably detectable under these settings. Treat this eval as a regression check.';
       return;
     }
     let lo = 0.0001;
     for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (nAt(mid) <= v.have) hi = mid; else lo = mid; }
-    const pts = hi * 100;
-    const extra = pts > (v.p1 - v.p0) * 100 + 0.05 ? ' That\'s larger than the ' + ((v.p1 - v.p0) * 100).toFixed(1).replace(/\.0$/, '') + '-point improvement you\'re looking for.' : '';
-    out.innerHTML = 'With <strong>' + fmt(v.have) + '</strong> ' + unit + ', the smallest real improvement you can reliably detect from ' + pct(v.p0) + ' is about <strong>' + pts.toFixed(1) + ' points</strong>.' + extra;
+    const extra = hi > (v.p1 - v.p0) + 0.0005
+      ? ' That\'s larger than the ' + pts(v.p1 - v.p0) + '-point improvement you\'re looking for.'
+      : ' That covers the ' + pts(v.p1 - v.p0) + '-point improvement you\'re looking for.';
+    out.innerHTML = 'the smallest real improvement you can reliably detect from ' + pct(v.p0) + ' is about <strong>' + (hi * 100).toFixed(1) + ' points</strong>.' + extra;
   }
 
+  let lastChart = null;
   function renderChart(v, yourN) {
-    const W = 640, H = 300, L = 64, R = 24, T = 20, B = 52;
-    const pts = [];
+    lastChart = [v, yourN];
+    const el = $('chart');
+    const W = Math.max(320, Math.round(el.clientWidth || 640));
+    const H = W < 520 ? 260 : 300, L = 58, R = 20, T = 18, B = 50;
+    const data = [];
     for (let e = 0; e <= 25; e += 1) {
       if (1 - 2 * e / 100 <= 0) break;
       const r = compute(v, e / 100, e / 100);
-      if (!r.invalid && Number.isFinite(r.n)) pts.push({ e, n: r.n });
+      if (!r.invalid && Number.isFinite(r.n)) data.push({ e, n: r.n });
     }
-    if (!pts.length) { $('chart').innerHTML = ''; return; }
+    if (!data.length) { el.innerHTML = ''; return; }
     const xMax = 25;
-    const yMax = niceMax(Math.max(pts.at(-1).n, yourN));
+    const yMax = niceMax(Math.max(data.at(-1).n, yourN));
     const X = e => L + e / xMax * (W - L - R);
     const Y = n => T + (1 - n / yMax) * (H - T - B);
-    const path = pts.map((p, i) => (i ? 'L' : 'M') + X(p.e).toFixed(1) + ' ' + Y(p.n).toFixed(1)).join(' ');
+    const path = data.map((p, i) => (i ? 'L' : 'M') + X(p.e).toFixed(1) + ' ' + Y(p.n).toFixed(1)).join(' ');
     const ticksY = [0, 0.25, 0.5, 0.75, 1].map(t => t * yMax);
-    const ticksX = [0, 5, 10, 15, 20, 25];
+    const ticksX = W < 520 ? [0, 10, 20] : [0, 5, 10, 15, 20, 25];
     const yourE = (v.ffr + v.fpr) / 2 * 100;
     const cx = X(Math.min(yourE, xMax)), cy = Y(Math.min(yourN, yMax));
     const labelLeft = cx > L + 190;
     let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Questions needed as grader error rises">';
     ticksY.forEach(t => {
-      svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(t) + '" y2="' + Y(t) + '" stroke="var(--rule)" stroke-width="1"/>';
-      svg += '<text x="' + (L - 10) + '" y="' + (Y(t) + 4) + '" text-anchor="end" font-size="12" fill="var(--muted)">' + fmt(t) + '</text>';
+      svg += '<line class="c-grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/>';
+      svg += '<text class="c-tick" x="' + (L - 10) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + fmt(t) + '</text>';
     });
     ticksX.forEach(t => {
-      svg += '<text x="' + X(t) + '" y="' + (H - B + 22) + '" text-anchor="middle" font-size="12" fill="var(--muted)">' + t + '%</text>';
+      svg += '<text class="c-tick" x="' + X(t) + '" y="' + (H - B + 22) + '" text-anchor="middle">' + t + '%</text>';
     });
-    svg += '<text x="' + (L + (W - L - R) / 2) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="12.5" fill="var(--muted)">Grader error rate, each direction</text>';
-    svg += '<path d="' + path + '" fill="none" stroke="var(--ink)" stroke-width="2.25" stroke-linejoin="round"/>';
-    svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="var(--signal)" stroke="var(--surface)" stroke-width="2"/>';
-    svg += '<text x="' + (labelLeft ? cx - 12 : cx + 12) + '" y="' + (labelLeft ? cy - 12 : cy + 22) + '" text-anchor="' + (labelLeft ? 'end' : 'start') + '" font-size="13" font-weight="600" fill="var(--text)">Your settings: ' + fmt(yourN) + '</text>';
+    svg += '<text class="c-tick" x="' + (L + (W - L - R) / 2) + '" y="' + (H - 8) + '" text-anchor="middle">Grader error rate, each direction</text>';
+    svg += '<path class="c-curve" d="' + path + '"/>';
+    svg += '<circle class="c-dot" cx="' + cx + '" cy="' + cy + '" r="6"/>';
+    svg += '<text class="c-label" x="' + (labelLeft ? cx - 12 : cx + 12) + '" y="' + (labelLeft ? cy - 12 : cy + 22) + '" text-anchor="' + (labelLeft ? 'end' : 'start') + '">Your settings: ' + fmt(yourN) + '</text>';
     svg += '</svg>';
-    $('chart').innerHTML = svg;
+    el.innerHTML = svg;
   }
 
   function niceMax(x) {
@@ -504,8 +618,25 @@
     return step * p;
   }
 
-  document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', render));
+  $('copyLink').addEventListener('click', () => {
+    const btn = $('copyLink');
+    const done = text => { btn.textContent = text; setTimeout(() => { btn.textContent = 'Copy link to these settings'; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(location.href).then(() => done('Copied'), () => done('Copy from the address bar'));
+    } else {
+      done('Copy from the address bar');
+    }
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { if (lastChart && !$('ok').hidden) renderChart(lastChart[0], lastChart[1]); }, 120);
+  });
+
+  document.querySelectorAll('input').forEach(el => el.addEventListener('input', render));
   document.querySelectorAll('input[type=radio]').forEach(el => el.addEventListener('change', render));
+  loadFromUrl();
   render();
 })();
 </script>
