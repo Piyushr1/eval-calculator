@@ -10,7 +10,14 @@
 <meta property="og:title" content="How many questions does your eval need?">
 <meta property="og:description" content="A sample-size calculator for evals that accounts for grader mistakes.">
 <meta property="og:url" content="https://piyushr1.github.io/eval-calculator/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://piyushr1.github.io/eval-calculator/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="How many questions does your eval need? 3,323 questions with a grader that's wrong 10% of the time, versus 870 with a perfect grader.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How many questions does your eval need?">
+<meta name="twitter:description" content="A sample-size calculator for evals that accounts for grader mistakes.">
+<meta name="twitter:image" content="https://piyushr1.github.io/eval-calculator/og-image.png">
 <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAGZUlEQVR4AeSbQWhdRRSGzzxr6FYpboSkWEwUFy7Moo0bN1bpIioKKkgScNUKFQKCEUREMII0YMF2JTRFUEFRsyhaN26adhEXLkQTqdSAGy26DbFmvN99OWFy3p3cOxP6SN67ZHrO+f9/5s7570venUVb0uAaHJ96fGh86szQ+MSVofHJv4rh9+go9sYep86w5watyY4GHB6fPFk0/osTf1nET4u4MRE5VIy9+lPsjT36afbM3ulhp81WGjD49OQjxeQrXuRc0fjITgvsbc6P0AO90FPVXjsMOPzUxPNuQ5aKxnnaVXP2IebH6Ine7Oa3GYDAe/epFfVKTW/0GPazZQAfEQQh2Ys5PdKr9rZlgNtwZxXs9Rj2WhrQ/kvpe+h3vu4R+rF2z9L+GvTiXq2b0mu89txqvzD4ffxVl/to/Ai9t5zIk7lL7Pd59F78Ddg4ut8byd//xtHCADecv4DIQ/cNyjOPHSsHedO10HZzXvW+3HBhQN67PQ18/Pa0fPHejMyemigHORhc9Q3bhqFB2415sX1s4ocwYDNvHmjwk3dek9EH7++YBAaHxpJgcGgsBwaHxnJgcGgsBwaHxnJN6iwDZiafk4E7D0TXh0NjBWBwFtcaDo3WGsHgtLYRDo3Fq2qLJRuA07huF7I1GrSKk4NpHYto0CpPDqZ1LKJBG+NjeLIBw4P3xtbqwENtmHcIDRBqw9zIOsoUrU5ONkAn9kpMNmBl9Y/GvYfaMK9bINSGecq8Oq3yyQb89NuqLP38q86PRjRoVUAOpnUsokGrPDmY1rGIBm2Mj+HJBrDQ7Pznsv7vLdLKAYfGkmBwFtcaDo3WGsHgtLYRDo3Fm9RZBuD0i2++X/lJ4EnAobEbAINDYzkwODSWA4NDYzkwODSWa1JnGcDC3PClt+bk2ddnZebcxXKQg8GhqRpwaNB2Y17VHkIs2wBdhIa+/P6qMMgVr4tomcMgr9Mrj5Y5DHLFc+OuDci98V6Zt2sDePvq5qlu5O4NOXHkVjnId2tktgE03s1THc1+eHxNPjqxJm8cWy8HORhcrhFZBtA8JzDev+2NweDQWA4MDo3lwODQWI4Gzz+xJg/fs2GpEoND00E2ALIM4OTFCSy2Phway4PBWVxrODRaazw9ui4Dd2jVGeHQdDL1SLIBPCGeVt3SaNCqjhxM61hEg1Z5nmzVk1deIxq0WjeNyQaknLhCbZjXbS7UHrmr82Mfm1+ljWkVTzZAJ/ZKTDYg93SWO+/6P823mKLVB9h89c0ZvH3x/r1ZRgMatCogB9M6FtGgVX7575b8+Gf9NtGg1XlNY/3KFStx8uIEVkGVEByasgj+AYMLoG0pHJptYFGcXRqQ9f+KJPIDhyZC7whnGcAT4gTG07Krg8GhsRwYHBrLgcGhsRxP9uS3Bys/CTx5ODR2XpM6ywAWZqPdPNXR4CuXD8rLlw7Ku1cHykEOBseecka2AXozjOBkxiBXvC6iZQ6DvE6vPM1eun5AGOSK58ZdG5B7470yb9cG8NbWzdNg7v1ihmcbwEa6eRrMvV+sccWzDGAznNx4b9eFNILBoVFMIxgcGsU0gsGhUUwjGBwaxTSCwaFRLCVmGcCJjZNb7EZwaCwPBmdxreHQaK0RDE5rG+HQWLxJnWwATuN63eJo0KqOHEzrWESDVnlyMK1jEQ3aGB/Dkw0IT2qxRRUPtWGufCyG2jCP6RVP0eqcZAN0Yq/EZANyT3Xdmpf6YJIN4K2N9/a6G6FBqzpyMK1jEQ1a5cnBtI5FNGhjfAxPNoCFOLFxciOvGnBoLAcGZ3Gt4dBorREMTmsb4dBYvEmdZQBOc3LDdXsTMDg0lgODQ2M5MDg0lgODQ2M5MDg0lmtSY8DNJkKr4YbdPA3m3s/u29Q3CwP8igGTSjbGiY5B3nQyWuYwyG/3vOr1/UphQOtaNdkPaOtay4t80w+tVvVI763VhQvfibhl6bvLLdN78Ssg4sR/IH12ac+lATcW5s+LuEXpm8sttnuW9v8YoW/f8qeJ/TDCXstPAE2vfjX/g3P+BfJeHvRIr9rjlgEAN76++BkC8l4c9EaPYW/bDIBA4FsyKj31N8Et0hO9ibk6DIDnI/L7woVHncgp2ddfkW6ZHuiFnqTiqjRAdfylLCY/4MUdF3FzIp5viqyzg9ymyyxb7I09ujn2zN7pwWi2lf8DAAD//4KjyX8AAAAGSURBVAMAFM7gNI3iF7UAAAAASUVORK5CYII=">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F4E5F'/%3E%3Ccircle cx='9' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='9' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='9' cy='16' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='16' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='16' r='2.7' fill='%23E3AA55'/%3E%3Ccircle cx='9' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='16' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3Ccircle cx='23' cy='23' r='2.7' fill='%23F7F8F6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +70,7 @@
 
   /* Heading */
   header { text-align: center; max-width: 640px; margin: 0 auto 32px; }
-  .kicker { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; font-weight: 500; }
+  .kicker { font-size: 14.5px; color: var(--muted); margin: 0 0 12px; font-weight: 500; }
   h1 {
     font-family: var(--serif);
     font-weight: 500;
@@ -71,7 +78,6 @@
     line-height: 1.2;
     margin: 0 0 12px;
   }
-  h1 em { color: var(--muted); }
   .lede { color: var(--muted); margin: 0; font-size: 16.5px; }
 
   /* Input panel */
@@ -84,7 +90,7 @@
   }
   .panel-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px 40px; }
   .group + .group { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--rule); }
-  .group-title { font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 12px; }
+  .group-title { font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--text); margin: 0 0 10px; }
   .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; }
   .row + .row { margin-top: 10px; }
   .row > label { font-family: var(--serif); font-size: 17px; line-height: 1.3; }
@@ -233,7 +239,7 @@
 <div class="page">
   <header>
     <p class="kicker">Eval sample size calculator</p>
-    <h1><em>Question:</em> How many questions does your eval need?</h1>
+    <h1>How many questions does your eval need?</h1>
     <p class="lede">Standard sample-size math assumes every answer is graded correctly. Enter how often your grader gets it wrong, and see what that costs you.</p>
   </header>
 
